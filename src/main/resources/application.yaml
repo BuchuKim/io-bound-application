@@ -8,5 +8,10 @@ spring:
     hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: update
+  rabbitmq:
+    host: 10.178.0.15
+    username: buchu
+    password: buchu
+    port: 5672
 server:
   port: 80
