@@ -22,6 +22,9 @@ public class PostController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private PostCacheService postCacheService;
+
     private static final Integer PAGE_SIZE = 10;
 
     // 1. 글을 작성한다.
@@ -34,6 +37,9 @@ public class PostController {
     // 2. 페이지 단위로 글 목록 받기 : default = 1
     @GetMapping("/posts")
     public Page<Post> getPostList(@RequestParam(defaultValue = "1") Integer page) {
+        if (page.equals(1)) {
+            return postCacheService.getFirstPostPage();
+        }
         return postRepository.findAll(PageRequest.of(page-1,PAGE_SIZE, Sort.by("id").descending()));
     }
     
