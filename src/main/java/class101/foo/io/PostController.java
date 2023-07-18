@@ -22,8 +22,6 @@ public class PostController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private PostCacheService postCacheService;
 
     private static final Integer PAGE_SIZE = 10;
 
@@ -33,25 +31,10 @@ public class PostController {
         producer.sendTo(objectMapper.writeValueAsString(post));
         return post;
     }
-
-    // 2. 페이지 단위로 글 목록 받기 : default = 1
-    @GetMapping("/posts")
-    public Page<Post> getPostList(@RequestParam(defaultValue = "1") Integer page) {
-        if (page.equals(1)) {
-            return postCacheService.getFirstPostPage();
-        }
-        return postRepository.findAll(PageRequest.of(page-1,PAGE_SIZE, Sort.by("id").descending()));
-    }
-    
-    // 3. 글 번호로 조회
-    @GetMapping("/posts/{id}")
-    public Post getPost(@PathVariable Long id) {
-        return postRepository.findById(id).get();
-    }
     
     // 4. 글 내용으로 검색 -> 해당 내용이 포함된 모든 글
     @GetMapping("/search")
     public List<Post> findPostByContent(@RequestParam String content) {
-        return postRepository.findByContentContains(content);
+        return postRepository.findByContent(content);
     }
 }

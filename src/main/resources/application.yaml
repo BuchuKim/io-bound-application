@@ -13,5 +13,9 @@ spring:
     username: buchu
     password: buchu
     port: 5672
+  data:
+    elasticsearch:
+      hosts: 10.146.0.2,10.146.0.6,10.146.0.7,10.146.0.8
+      port: 9200
 server:
   port: 80
